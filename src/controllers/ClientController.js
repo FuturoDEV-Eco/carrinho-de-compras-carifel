@@ -25,9 +25,9 @@ class ClientController extends Database{
 
             const clients = await this.conexao.query(`
                 insert into clients(name, email, cpf, contact)
-                values($1, $2, $3, $4)
+                values($1, $2, $3, $4) returning *
                 `, [dados.name, dados.email, dados.cpf, dados.contact])
-
+               
                 response.status(201).json(clients.rows[0])
         }catch(error){
             response.status(500).json({ mensagem: "Não foi possível cadastrar o cliente!"})

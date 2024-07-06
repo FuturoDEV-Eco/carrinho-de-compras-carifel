@@ -5,3 +5,27 @@ email varchar(150) unique not null,
 cpf varchar(50) unique not null,
 contact varchar(20) not null
 )
+
+create table categories(
+id serial primary key,
+name varchar(150) NOT NULL
+)
+
+insert into categories(name)
+values('eletrônicos'),('brinquedos'),('perfumaria'),('vestuário'),
+	('calçados'),('decoração'),('alimentos'),
+	('medicamentos'),('automoveis'),('saúde')
+
+create type voltage as enum('110', '220')
+	
+create table products(
+id serial primary key,
+name varchar(150) NOT NULL,
+amount varchar(150) unique default 0,
+color varchar(50),
+voltage voltage,
+description TEXT,
+category_id int NOT NULL, 
+price decimal(10,2),
+foreign key (category_id) references categories(id) 
+)
