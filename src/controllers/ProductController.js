@@ -61,12 +61,15 @@ class ProductController extends Database{
             try{
      
              const id = request.params.id
+           
      
-             const produto = await conexao.query(`
-                 select * from products where id = $1
+             const produto = await this.conexao.query(`
+              select  p.id as product_id, p.name as product_name, amount, color, voltage, description, category_id, c.name as category_name , price 
+               from products p inner join categories c on c.id = p.category_id
+               where p.id = $1              
                  `, [id])
              
-             if(produto.rowcount === 0){
+             if(produto.rows.lenght === 0){
                  return response.status(404).json(
                      { mensagem: 'O produto não foi encontrado!'}
                  )
@@ -76,5 +79,6 @@ class ProductController extends Database{
                  response.status(500).json({ mensagem: 'Não foi possível encontrar o produto!'})
             }
          }
+        
 }
         module.exports = new ProductController()
