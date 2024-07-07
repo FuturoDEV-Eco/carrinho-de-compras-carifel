@@ -41,10 +41,10 @@ class ProductController extends Database{
                             name ilike $1 or 
                             amount ilike $1 or
                             color ilike $1 or
-                            voltage ilike $1 or
+                            cast(voltage as varchar) ilike $1 or
                             cast(category_id as varchar) ilike $1 or
                             cast(price as varchar) ilike $1
-                            `, [`%S{query.filtro}%`])    
+                            `, [`%${query.filtro}%`])    
 
                             response.json(produtos.rows)
                     }else{
@@ -57,5 +57,28 @@ class ProductController extends Database{
                 response.status(500).json({ mensagem: 'Não foi possível listar os produtos!'})
             }
         }
+        async listarUm(request,response){
+            try{
+     
+             const id = request.params.id
+           
+     
+             const produto = await this.conexao.query(`
+              select  p.id as product_id, p.name as product_name, amount, color, voltage, description, category_id, c.name as category_name , price 
+               from products p inner join categories c on c.id = p.category_id
+               where p.id = $1              
+                 `, [id])
+             
+             if(produto.rows.lenght === 0){
+                 return response.status(404).json(
+                     { mensagem: 'O produto não foi encontrado!'}
+                 )
+             }
+             response.json(produto.rows[0])
+            }catch (error){
+                 response.status(500).json({ mensagem: 'Não foi possível encontrar o produto!'})
+            }
+         }
+        
 }
         module.exports = new ProductController()
