@@ -29,3 +29,23 @@ category_id int NOT NULL,
 price decimal(10,2),
 foreign key (category_id) references categories(id) 
 )
+
+CREATE TABLE orders
+(
+    id serial NOT NULL DEFAULT ,
+    client_id integer PRIMARY KEY NOT NULL,
+    total numeric (10,2) NOT NULL,
+    address text  NOT NULL,
+    observations text ,
+    FOREIGN KEY (client_id)REFERENCES clients(id) 
+)
+
+Create table orders_items(
+id serial primary key,
+order_id int,
+product_id int,
+amount TEXT,
+price decimal (10,2),
+foreign key (order_id) references orders(id),
+foreign key (product_id) references products(id)
+)
