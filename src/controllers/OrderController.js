@@ -7,9 +7,9 @@ class OrderController extends Database{
         try{
             const dados = request.body
 
-            if(!dados.client_id || !dados.address || dados.products[0].amount || !dados.products){
+            if(!dados.client_id || !dados.address || !dados.products){
                 return response.status(400).json({
-                    mensagem: "ID do cliente, endereço, quantidade e produto são obrigatórios."
+                    mensagem: "ID do cliente, endereço e produto são obrigatórios."
                 })               
             }
 
